@@ -19,6 +19,15 @@ namespace ConnectAndGetInfoOfWebsite
         private void Form1_Load(object sender, EventArgs e)
         {
             _btnGetInformation.Click += _btnGetInformation_ClickAsync;
+            _btnImport.Click += _btnImport_Click;
+        }
+
+        private void _btnImport_Click(object sender, EventArgs e)
+        {
+            using (var nf = new frmImport())
+            {
+                nf.ShowDialog();
+            }
         }
 
         private async void _btnGetInformation_ClickAsync(object sender, EventArgs e)
@@ -37,6 +46,9 @@ namespace ConnectAndGetInfoOfWebsite
                 doc.LoadHtml(html);
 
                 // Các XPath selector đã được cập nhật để khớp với HTML của cosme-de.net
+
+                // 0. Lấy Tên Brand
+                string brand = doc.DocumentNode.SelectSingleNode("//div[@class='item_brand_name']/span[@class='brand_name']/a")?.InnerText.Trim();
 
                 // 1. Lấy Tên sản phẩm
                 // HTML dùng: <h1 class="main_item_name">...</h1>
@@ -59,7 +71,7 @@ namespace ConnectAndGetInfoOfWebsite
                     // Giải mã HTML entities
                     categoryPart1 = System.Net.WebUtility.HtmlDecode(categoryPart1); // "ボディケア・香水"
                     categoryPart2 = System.Net.WebUtility.HtmlDecode(categoryPart2); // "女性用香水（レディースフレグランス）"
-               
+
                     category = $"{categoryPart1} > {categoryPart2}";
                 }
 
@@ -104,11 +116,19 @@ namespace ConnectAndGetInfoOfWebsite
                 // Lấy giá trị của thuộc tính 'src'
                 string imageUrl = imgNode?.GetAttributeValue("src", "Không tìm thấy");
 
+                var nameSplit = name.Contains("ml")
+                            ? name.Split(' ')
+                            : null;
+
+                // CẬP NHẬT GIAO DIỆN
                 if (this.InvokeRequired)
                 {
                     this.Invoke(new Action(() =>
                     {
+                        _txtBrandName.Text = brand ?? "Không tìm thấy";
                         _txtProductName.Text = name ?? "Không tìm thấy";
+                        _txtNet.Text = nameSplit != null && nameSplit.Length > 1 ? nameSplit[nameSplit.Length - 1]
+                            : "Không tìm thấy";
                         _txtProductCategory.Text = category ?? "Không tìm thấy";
                         _txtProductDescription.Text = description ?? "Không tìm thấy";
                         _txtProductImageUrl.Text = imageUrl ?? "Không tìm thấy";
@@ -126,7 +146,10 @@ namespace ConnectAndGetInfoOfWebsite
                 }
                 else
                 {
+                    _txtBrandName.Text = brand ?? "Không tìm thấy";
                     _txtProductName.Text = name ?? "Không tìm thấy";
+                    _txtNet.Text = nameSplit != null && nameSplit.Length > 1 ? nameSplit[nameSplit.Length - 1]
+                           : "Không tìm thấy";
                     _txtProductCategory.Text = category ?? "Không tìm thấy";
                     _txtProductDescription.Text = description ?? "Không tìm thấy";
                     _txtProductImageUrl.Text = imageUrl ?? "Không tìm thấy";
