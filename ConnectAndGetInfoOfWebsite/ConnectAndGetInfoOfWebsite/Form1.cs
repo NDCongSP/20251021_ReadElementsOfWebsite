@@ -1,5 +1,11 @@
-﻿using HtmlAgilityPack;
+﻿using ConnectAndGetInfoOfWebsite.httpClient;
+using ConnectAndGetInfoOfWebsite.httpClient.DTO.Request;
+using ConnectAndGetInfoOfWebsite.httpClient.DTO.Response;
+using HtmlAgilityPack;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -20,6 +26,40 @@ namespace ConnectAndGetInfoOfWebsite
         {
             _btnGetInformation.Click += _btnGetInformation_ClickAsync;
             _btnImport.Click += _btnImport_Click;
+            _btnCallAPI.Click += _btnCallAPI_Click;
+        }
+
+        private async void _btnCallAPI_Click(object sender, EventArgs e)
+        {
+            
+
+            // 2. Chuẩn bị body
+            var myRequestBody = new ConvertImageLinkRequest
+            {
+                image_type = 2,
+                original_url = "https://image2.cosme-de.net/html/images/3103008.jpg"
+            };
+
+            // 3. Gọi hàm với headers
+            var result = await ApiClient.SendRequestAsync<ConvertImageLinkRequest, ConvertImageLinkResponse>
+                            (
+                                ConstantApiRoutes.DoimainApi,
+                                ConstantApiRoutes.Product.ConvertImageLink,
+                                method: HttpMethod.Post,
+                                myRequestBody
+                            );
+
+            if (result.Succeeded)
+            {
+                // Xử lý khi thành công
+                var apiData = result.Data;
+            }
+            else
+            {
+                // Xử lý khi thất bại
+                var errorMessage = result.Messages.FirstOrDefault();
+                MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void _btnImport_Click(object sender, EventArgs e)

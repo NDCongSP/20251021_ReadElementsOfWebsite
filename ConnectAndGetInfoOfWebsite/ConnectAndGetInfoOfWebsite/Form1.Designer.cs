@@ -45,6 +45,7 @@
             this._txtBrandName = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this._txtNet = new System.Windows.Forms.TextBox();
+            this._btnCallAPI = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this._pic)).BeginInit();
             this.SuspendLayout();
             // 
@@ -199,6 +200,15 @@
             this._txtNet.Size = new System.Drawing.Size(71, 26);
             this._txtNet.TabIndex = 15;
             // 
+            // _btnCallAPI
+            // 
+            this._btnCallAPI.Location = new System.Drawing.Point(940, 46);
+            this._btnCallAPI.Name = "_btnCallAPI";
+            this._btnCallAPI.Size = new System.Drawing.Size(113, 23);
+            this._btnCallAPI.TabIndex = 12;
+            this._btnCallAPI.Text = "Call API";
+            this._btnCallAPI.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AcceptButton = this._btnGetInformation;
@@ -209,6 +219,7 @@
             this.Controls.Add(this._txtNet);
             this.Controls.Add(this.label5);
             this.Controls.Add(this._txtBrandName);
+            this.Controls.Add(this._btnCallAPI);
             this.Controls.Add(this._btnImport);
             this.Controls.Add(this.label4);
             this.Controls.Add(this._txtProductImageUrl);
@@ -250,6 +261,7 @@
         private System.Windows.Forms.TextBox _txtBrandName;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox _txtNet;
+        private System.Windows.Forms.Button _btnCallAPI;
     }
 }
 
